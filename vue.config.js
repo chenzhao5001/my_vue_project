@@ -1,12 +1,11 @@
-const { defineConfig } = require('@vue/cli-service')
 const registerRouter = require('./backend/router')
 
-module.exports = defineConfig({
+module.exports = {
   css: {
     loaderOptions: {
       sass: {
         //  全局引入变量和mixin
-        additionalData: `
+        prependData: `
           @import "@/assets/scss/variable.scss";
           @import "@/assets/scss/mixin.scss";
         `
@@ -14,10 +13,9 @@ module.exports = defineConfig({
     }
   },
   devServer: {
-
-    // before (app) {
-    //   registerRouter(app)
-    // }
+    before (app) {
+      registerRouter(app)
+    }
   },
   configureWebpack: (config) => {
     if (process.env.npm_config_report) {
@@ -27,6 +25,4 @@ module.exports = defineConfig({
   },
   productionSourceMap: false, // 生产不需要打开sourceMap
   publicPath: process.env.NODE_ENV === 'production' ? '/music-next/' : '/'
-
-  // transpileDependencies: true
-})
+}
