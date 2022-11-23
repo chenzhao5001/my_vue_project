@@ -1,4 +1,6 @@
 const { defineConfig } = require('@vue/cli-service')
+const registerRouter = require('./backend/router')
+
 module.exports = defineConfig({
   css: {
     loaderOptions: {
@@ -11,5 +13,20 @@ module.exports = defineConfig({
       }
     }
   },
-  transpileDependencies: true
+  devServer: {
+
+    // before (app) {
+    //   registerRouter(app)
+    // }
+  },
+  configureWebpack: (config) => {
+    if (process.env.npm_config_report) {
+      const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
+      config.plugins.push(new BundleAnalyzerPlugin())
+    }
+  },
+  productionSourceMap: false, // 生产不需要打开sourceMap
+  publicPath: process.env.NODE_ENV === 'production' ? '/music-next/' : '/'
+
+  // transpileDependencies: true
 })
